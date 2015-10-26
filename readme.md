@@ -8,11 +8,11 @@ I called this Antlers because it was just fun... I mean, heck... everything abou
 Installation
 ------------
 
-# Click the Downloads button at the top right of this page.
-# Choose the zip file.
-# Once downloaded, unzip the the zip file.
-# If you're looking at a folder, rename it to Antlers. If you're looking at a set of files, create a new folder named Antlers and put the files in.
-# Copy the folder to the appropriate place (Note that this should work with Sublime Text 2 or 3):
+1. Click the Downloads button at the top right of this page.
+2. Choose the zip file.
+3. Once downloaded, unzip the the zip file.
+4. If you're looking at a folder, rename it to Antlers. If you're looking at a set of files, create a new folder named Antlers and put the files in.
+5. Copy the folder to the appropriate place (Note that this should work with Sublime Text 2 or 3):
 
 - OS X: ~/Library/Application Support/Sublime Text 3/Packages/
 - Windows: %APPDATA%/Sublime Text 3/Packages/

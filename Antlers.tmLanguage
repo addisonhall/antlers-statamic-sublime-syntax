@@ -26,6 +26,20 @@
 	</array>
 	<key>repository</key>
 	<dict>
+		<key>constant-language</key>
+		<dict>
+			<key>match</key>
+			<string>(true|TRUE|false|FALSE|yes|YES|no|NO)?</string>
+			<key>name</key>
+			<string>constant.language.statamic</string>
+		</dict>
+		<key>constant-numbers</key>
+		<dict>
+			<key>match</key>
+			<string>(-|\+)?\s*[0-9]+(\.[0-9]+)?</string>
+			<key>name</key>
+			<string>constant.numeric.statamic</string>
+		</dict>
 		<key>embedded-code</key>
 		<dict>
 			<key>patterns</key>
@@ -58,14 +72,15 @@
 					<key>include</key>
 					<string>#statamic-tag-operator</string>
 				</dict>
+				<dict>
+					<key>include</key>
+					<string>#statamic-not-operator</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#statamic-modifier-pipe</string>
+				</dict>
 			</array>
-		</dict>
-		<key>numbers</key>
-		<dict>
-			<key>match</key>
-			<string>(-|\+)?\s*[0-9]+(\.[0-9]+)?</string>
-			<key>name</key>
-			<string>constant.numeric.statamic</string>
 		</dict>
 		<key>statamic-comment</key>
 		<dict>
@@ -83,6 +98,20 @@
 			<string>\#\}\}</string>
 			<key>name</key>
 			<string>comment.block.statamic</string>
+		</dict>
+		<key>statamic-modifier-pipe</key>
+		<dict>
+			<key>match</key>
+			<string>(\|)</string>
+			<key>name</key>
+			<string>keyword.operator.other.statamic</string>
+		</dict>
+		<key>statamic-not-operator</key>
+		<dict>
+			<key>match</key>
+			<string>(\s|^)(!)</string>
+			<key>name</key>
+			<string>keyword.operator.other.statamic</string>
 		</dict>
 		<key>statamic-tag</key>
 		<dict>
@@ -107,7 +136,7 @@
 				</dict>
 			</dict>
 			<key>name</key>
-			<string>statamic.tag.html</string>
+			<string>entity.name.tag.statamic</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -127,17 +156,11 @@
 		<key>statamic-tag-addon-builtin</key>
 		<dict>
 			<key>begin</key>
-			<string>(404|control_panel_edit_url|/?entries:(listing|pagination|previous|next|meld)|get:[a-zA-Z0-9-_:]+|/?get_content|/?get_files|get_post:[a-zA-Z0-9-_:]+|/?location:(map_listing|map_url)|/?member:(forgot_password_form|reset_password_form|login|logout|profile|listing)|/?nav|/?nav:(exists|count|breadcrumbs)|/?obfuscate|/?pages:(listing|next|previous|meld)|path|post:[a-zA-Z0-9-_:]+|redirect|switch|/?taxonomy:listing|theme:(partial|asset|js|css|img)|transform)\b</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>support.function.addon.statamic</string>
-				</dict>
-			</dict>
+			<string>(404|cache|control_panel_edit_url|current_date|/?entries:(listing|pagination|map|previous|next|meld)|get:[a-zA-Z0-9-_:]+|/?get_content|/?get_files|get_post:[a-zA-Z0-9-_:]+|get_value:[a-zA-Z0-9-_:]+|/?location:(map_listing|map_url)|log:(debug|info|warn|error|fatal)|/?member:(forgot_password_form|reset_password_form|register_form|login|login_form|logout_url|logout|profile|profile_form|listing|pagination)|/?nav|/?nav:(exists|count|breadcrumbs)|/?obfuscate|/?pages:(listing|next|previous|meld)|path|post:[a-zA-Z0-9-_:]+|redirect|switch|/?taxonomy:listing|theme:(partial|asset|js|css|img)|transform|/?parent:[a-zA-Z0-9-_:]+|/?relate:[a-zA-Z0-9-_:]+)\b</string>
 			<key>end</key>
 			<string>(?=\}\})</string>
+			<key>name</key>
+			<string>entity.name.function.statamic</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -171,21 +194,21 @@
 		<key>statamic-tag-global-variable</key>
 		<dict>
 			<key>match</key>
-			<string>(\G|\s|\b)(_is_draft|_is_hidden|current_date|current_url|environment|homepage|is_admin|is_[a-zA-Z0-9-_:]+|last_modified|last_segment|logged_in|next|now|page_url|permalink|prev|segment_[0-9]+|taxonomy_name|taxonomy_slug|theme_path|username)\b(?![\=\-\:])</string>
+			<string>(\G|\s|\b)(count|date|datestamp|email_sent|error|errors|expired|extension|file|filename|first|index|zero_index|grouped_date|_is_draft|_is_hidden|current_url|is_current|is_parent|title|children|\*recursive\schildren\*|parent|environment|has_previous|has_next|homepage|is_admin|is_image|is_[a-zA-Z0-9-_:]+|last|last_modified|last_segment|logged_in|next|now|no_results|page_url|permalink|prev|segment_[0-9]+|success|field_errors:[a-zA-Z0-9-_:]+|old_values:[a-zA-Z0-9-_:]+|size|size_bytes|size_kilobytes|size_megabytes|size_gigabytes|name|slug|taxonomy_name|taxonomy_slug|theme_path|total_found|total_results|results|url|url_invalid|username)\b(?![\=\-\:])</string>
 			<key>name</key>
-			<string>support.variable.language.statamic</string>
+			<string>variable.language.statamic</string>
 		</dict>
 		<key>statamic-tag-global-variable-bracketed</key>
 		<dict>
 			<key>match</key>
-			<string>\{\{(\s?)(_is_draft|_is_hidden|current_date|current_url|environment|homepage|is_admin|is_[a-zA-Z0-9-_:]+|last_modified|last_segment|logged_in|next|now|page_url|permalink|prev|segment_[0-9]+|taxonomy_name|taxonomy_slug|theme_path|username)(\s?)\}\}</string>
+			<string>\{\{(\s?)(count|date|datestamp|email_sent|error|errors|expired|extension|file|filename|first|index|zero_index|grouped_date|_is_draft|_is_hidden|current_url|is_current|is_parent|title|children|\*recursive\schildren\*|parent|environment|has_previous|has_next|homepage|is_admin|is_image|is_[a-zA-Z0-9-_:]+|last|last_modified|last_segment|logged_in|next|now|no_results|page_url|permalink|prev|segment_[0-9]+|success|field_errors:[a-zA-Z0-9-_:]+|old_values:[a-zA-Z0-9-_:]+|size|size_bytes|size_kilobytes|size_megabytes|size_gigabytes|name|slug|taxonomy_name|taxonomy_slug|theme_path|total_found|total_results|results|url|url_invalid|username)(\s?)\}\}</string>
 			<key>name</key>
-			<string>support.variable.language.statamic</string>
+			<string>variable.language.statamic</string>
 		</dict>
 		<key>statamic-tag-operator</key>
 		<dict>
 			<key>match</key>
-			<string>(\s|^)(or|and|&amp;&amp;|&lt;=|&gt;=|&lt;&gt;|!=|==|===|!==|!|\|\|)\s</string>
+			<string>(\s|^)(or|OR|and|AND|&amp;&amp;|&lt;=|&gt;=|&lt;&gt;|&lt;|&gt;|=|!=|==|===|!==|\|\|)\s</string>
 			<key>name</key>
 			<string>keyword.operator.logical.statamic</string>
 		</dict>
@@ -196,24 +219,25 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>entity.other.attribute-name.predefined.statamic</string>
+					<string>entity.other.attribute-name.statamic</string>
 				</dict>
 			</dict>
 			<key>match</key>
-			<string>(?:\s|^)(action|current|for|from|key|scope|field|format|folder|taxonomy|show_hidden|since|until|show_past|show_future|conditions|precision|sort_by|sort_dir|sort|limit|offset|paginate|group_by_date|sort|src|use_context|wrap|match|exclude|extension|in|not_in|file_size|file_date|depth|center_point|locate_with|zoom|map_id|clusters|type|open_popup|return|member|role|max_depth|include_entries|folders_only|include_content|url|include_home|reverse|backspace|min_count|file|cache_bust|tag|destination|quality|width|height|ratio|upsize|pos_x|pos_y|rotate|flip|blur|pixelate|greyscale|watermark)=(?!=)</string>
+			<string>(?:\s|^)(action|between|current|for|from|key|scope|field|format|folder|taxonomy|show_hidden|since|until|show_past|show_future|conditions|precision|sort_by|sort_dir|sort|limit|offset|paginate|group_by_date|src|use_context|wrap|match|exclude|extension|in|not_in|file_size|file_date|depth|center_point|locate_with|map_id|clusters|type|open_popup|return|reset_return|allow_request_return|logged_in_redirect|attr|member|role|max_depth|include_entries|folders_only|include_content|url|username|include_home|reverse|backspace|trim|min_count|file|cache_bust|tag|destination|quality|width|height|ratio|upsize|pos_x|pos_y|rotate|flip|blur|pixelate|greyscale|watermark|what|zoom|specifically|message)=(?!=)</string>
 		</dict>
 		<key>statamic-var-modifiers</key>
 		<dict>
-			<key>captures</key>
-			<dict>
-				<key>0</key>
-				<dict>
-					<key>name</key>
-					<string>support.class.statamic</string>
-				</dict>
-			</dict>
 			<key>match</key>
 			<string>(?&lt;=(?:[a-zA-Z0-9_\x{7f}-\x{ff}\]\)\'\"]\|)|\{\{\sfilter\s)(-:[0-9]+|\+:[0-9]+|\*:[0-9]+|/:[0-9]+|\^:[0-9]+|abs|acos|ago|ampersand_list|asin|atan|backspace|bindec|ceil|censor|contains:([a-zA-Z0-9-_:]+)|cos|decbin|dechex|decoct|deg2rad|deslugify|distance_in_km_from:(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)|distance_in_mi_from:(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)|double|dump|empty|ends_with:([a-zA-Z0-9-_]+)|entities|floor|format_number(:?)(([0-9]+)?)|hexdec|img(:?)(([0-9]+)?)((,[0-9]+)?)|in_future|in_past|is_today|is_tomorrow|is_weekday|is_weekend|length|link|list|log(:?)(([0-9]+)?)|log10|lower|markdown|%:(([0-9]+)?)|nl2br|not_empty|numeric|obfuscate|octdec|option_list|ordered_list|ordinal|rad2deg|relative|remove_left:([a-zA-Z0-9-_]+)|remove_left:([a-zA-Z0-9-_]+)|repeat:([0-9]+)|replace:([a-zA-Z0-9-_]+):([a-zA-Z0-9-_]+)|required_list|reverse|rot13|round(:?)(([0-9]+)?)|sanitize|scramble|sentence_list|sin|since|slugify|smartypants|spaced_list|specialchars|sqrt|starts_with:([a-zA-Z0-9-_]+)(:?)((true|false)?)|strip_spaces|strip_tags(:?)(([a-zA-Z0-9]+(,[a-zA-Z0-9]+)*)?)|tan|textile|title|trim|triple|truncate:([0-9]+)|ucfirst|unordered_list|until|upper|urldecode|urlencode|widont|word_count)(?=[\s\|\]\}\):,]|\.\.|\*\*)</string>
+			<key>name</key>
+			<string>support.function.statamic</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#statamic-modifier-pipe</string>
+				</dict>
+			</array>
 		</dict>
 		<key>statamic-variable</key>
 		<dict>
@@ -282,6 +306,14 @@
 				</dict>
 				<dict>
 					<key>include</key>
+					<string>#statamic-not-operator</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#statamic-modifier-pipe</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>#statamic-variable</string>
 				</dict>
 				<dict>
@@ -306,7 +338,11 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#numbers</string>
+					<string>#constant-numbers</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#constant-language</string>
 				</dict>
 			</array>
 		</dict>

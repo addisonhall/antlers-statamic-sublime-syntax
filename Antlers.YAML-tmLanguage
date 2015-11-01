@@ -21,7 +21,7 @@ repository:
     end: '\#\}\}'
 
   statamic-tag:
-    name: statamic.tag.html
+    name: entity.name.tag.statamic
     begin: \{\{(\s?)(?=/?[a-zA-Z][a-zA-Z0-9:_-]*[a-zA-Z]+\b(?![:;]))
     beginCaptures:
       '0': {name: punctuation.definition.tag.begin.statamic}
@@ -33,16 +33,27 @@ repository:
     - include: '#statamic-tag-conditional'
     - include: '#tag-stuff'
 
+  # STANDARD, BUILT-IN STATAMIC TAGS
   statamic-tag-addon-builtin:
-    begin: (404|control_panel_edit_url|/?entries:(listing|pagination|previous|next|meld)|get:[a-zA-Z0-9-_:]+|/?get_content|/?get_files|get_post:[a-zA-Z0-9-_:]+|/?location:(map_listing|map_url)|/?member:(forgot_password_form|reset_password_form|login|logout|profile|listing)|/?nav|/?nav:(exists|count|breadcrumbs)|/?obfuscate|/?pages:(listing|next|previous|meld)|path|post:[a-zA-Z0-9-_:]+|redirect|switch|/?taxonomy:listing|theme:(partial|asset|js|css|img)|transform)\b
+    name: entity.name.function.statamic
+    begin: (404|cache|control_panel_edit_url|current_date|/?entries:(listing|pagination|map|previous|next|meld)|get:[a-zA-Z0-9-_:]+|/?get_content|/?get_files|get_post:[a-zA-Z0-9-_:]+|get_value:[a-zA-Z0-9-_:]+|/?location:(map_listing|map_url)|log:(debug|info|warn|error|fatal)|/?member:(forgot_password_form|reset_password_form|register_form|login|login_form|logout_url|logout|profile|profile_form|listing|pagination)|/?nav|/?nav:(exists|count|breadcrumbs)|/?obfuscate|/?pages:(listing|next|previous|meld)|path|post:[a-zA-Z0-9-_:]+|redirect|switch|/?taxonomy:listing|theme:(partial|asset|js|css|img)|transform|/?parent:[a-zA-Z0-9-_:]+|/?relate:[a-zA-Z0-9-_:]+)\b
     end: (?=\}\})
-    captures:
-      '1': {name: support.function.addon.statamic}
+    # captures:
+      # '1': {name: support.function.addon.statamic}
     patterns:
     - include: '#tag-stuff'
 
+  # PARAMETERS FOR STATAMIC TAGS
+  statamic-tag-parameter-known:
+    # name: entity.other.attribute-name.statamic
+    match: (?:\s|^)(action|between|current|for|from|key|scope|field|format|folder|taxonomy|show_hidden|since|until|show_past|show_future|conditions|precision|sort_by|sort_dir|sort|limit|offset|paginate|group_by_date|src|use_context|wrap|match|exclude|extension|in|not_in|file_size|file_date|depth|center_point|locate_with|map_id|clusters|type|open_popup|return|reset_return|allow_request_return|logged_in_redirect|attr|member|role|max_depth|include_entries|folders_only|include_content|url|username|include_home|reverse|backspace|trim|min_count|file|cache_bust|tag|destination|quality|width|height|ratio|upsize|pos_x|pos_y|rotate|flip|blur|pixelate|greyscale|watermark|what|zoom|specifically|message)=(?!=)
+    captures:
+      '1': {name: entity.other.attribute-name.statamic}
+      # '1': {name: entity.name.type.statamic}
+
   statamic-variable:
     name: variable.other.php.html
+    # name: variable.language.statamic
     begin: \{\{\s*
     captures:
       '0': {name: support.function.php.statamic}
@@ -57,31 +68,41 @@ repository:
     - include: '#tag-stuff'
 
   statamic-tag-global-variable:
-    name: support.variable.language.statamic
-    match: (\G|\s|\b)(_is_draft|_is_hidden|current_date|current_url|environment|homepage|is_admin|is_[a-zA-Z0-9-_:]+|last_modified|last_segment|logged_in|next|now|page_url|permalink|prev|segment_[0-9]+|taxonomy_name|taxonomy_slug|theme_path|username)\b(?![\=\-\:])
+    name: variable.language.statamic
+    match: (\G|\s|\b)(count|date|datestamp|email_sent|error|errors|expired|extension|file|filename|first|index|zero_index|grouped_date|_is_draft|_is_hidden|current_url|is_current|is_parent|title|children|\*recursive\schildren\*|parent|environment|has_previous|has_next|homepage|is_admin|is_image|is_[a-zA-Z0-9-_:]+|last|last_modified|last_segment|logged_in|next|now|no_results|page_url|permalink|prev|segment_[0-9]+|success|field_errors:[a-zA-Z0-9-_:]+|old_values:[a-zA-Z0-9-_:]+|size|size_bytes|size_kilobytes|size_megabytes|size_gigabytes|name|slug|taxonomy_name|taxonomy_slug|theme_path|total_found|total_results|results|url|url_invalid|username)\b(?![\=\-\:])
 
   statamic-tag-global-variable-bracketed:
-    name: support.variable.language.statamic
-    match: \{\{(\s?)(_is_draft|_is_hidden|current_date|current_url|environment|homepage|is_admin|is_[a-zA-Z0-9-_:]+|last_modified|last_segment|logged_in|next|now|page_url|permalink|prev|segment_[0-9]+|taxonomy_name|taxonomy_slug|theme_path|username)(\s?)\}\}
+    name: variable.language.statamic
+    match: \{\{(\s?)(count|date|datestamp|email_sent|error|errors|expired|extension|file|filename|first|index|zero_index|grouped_date|_is_draft|_is_hidden|current_url|is_current|is_parent|title|children|\*recursive\schildren\*|parent|environment|has_previous|has_next|homepage|is_admin|is_image|is_[a-zA-Z0-9-_:]+|last|last_modified|last_segment|logged_in|next|now|no_results|page_url|permalink|prev|segment_[0-9]+|success|field_errors:[a-zA-Z0-9-_:]+|old_values:[a-zA-Z0-9-_:]+|size|size_bytes|size_kilobytes|size_megabytes|size_gigabytes|name|slug|taxonomy_name|taxonomy_slug|theme_path|total_found|total_results|results|url|url_invalid|username)(\s?)\}\}
 
   statamic-var-modifiers:
+    name: support.function.statamic
     match: (?<=(?:[a-zA-Z0-9_\x{7f}-\x{ff}\]\)\'\"]\|)|\{\{\sfilter\s)(-:[0-9]+|\+:[0-9]+|\*:[0-9]+|/:[0-9]+|\^:[0-9]+|abs|acos|ago|ampersand_list|asin|atan|backspace|bindec|ceil|censor|contains:([a-zA-Z0-9-_:]+)|cos|decbin|dechex|decoct|deg2rad|deslugify|distance_in_km_from:(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)|distance_in_mi_from:(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)|double|dump|empty|ends_with:([a-zA-Z0-9-_]+)|entities|floor|format_number(:?)(([0-9]+)?)|hexdec|img(:?)(([0-9]+)?)((,[0-9]+)?)|in_future|in_past|is_today|is_tomorrow|is_weekday|is_weekend|length|link|list|log(:?)(([0-9]+)?)|log10|lower|markdown|%:(([0-9]+)?)|nl2br|not_empty|numeric|obfuscate|octdec|option_list|ordered_list|ordinal|rad2deg|relative|remove_left:([a-zA-Z0-9-_]+)|remove_left:([a-zA-Z0-9-_]+)|repeat:([0-9]+)|replace:([a-zA-Z0-9-_]+):([a-zA-Z0-9-_]+)|required_list|reverse|rot13|round(:?)(([0-9]+)?)|sanitize|scramble|sentence_list|sin|since|slugify|smartypants|spaced_list|specialchars|sqrt|starts_with:([a-zA-Z0-9-_]+)(:?)((true|false)?)|strip_spaces|strip_tags(:?)(([a-zA-Z0-9]+(,[a-zA-Z0-9]+)*)?)|tan|textile|title|trim|triple|truncate:([0-9]+)|ucfirst|unordered_list|until|upper|urldecode|urlencode|widont|word_count)(?=[\s\|\]\}\):,]|\.\.|\*\*)
-    captures:
-      '0': {name: support.class.statamic}
-      # '3': {name: constant.numeric.statamic}
+    # captures:
+      # '0': {name: support.class.statamic}
+      # '2': {name: constant.numeric.statamic}
+    patterns:
+    - include: '#statamic-modifier-pipe'
 
   statamic-tag-operator:
     name: keyword.operator.logical.statamic
-    match: (\s|^)(or|and|&&|<=|>=|<>|!=|==|===|!==|!|\|\|)\s
+    match: (\s|^)(or|OR|and|AND|&&|<=|>=|<>|<|>|=|!=|==|===|!==|\|\|)\s
 
-  statamic-tag-parameter-known:
-    match: (?:\s|^)(action|current|for|from|key|scope|field|format|folder|taxonomy|show_hidden|since|until|show_past|show_future|conditions|precision|sort_by|sort_dir|sort|limit|offset|paginate|group_by_date|sort|src|use_context|wrap|match|exclude|extension|in|not_in|file_size|file_date|depth|center_point|locate_with|zoom|map_id|clusters|type|open_popup|return|member|role|max_depth|include_entries|folders_only|include_content|url|include_home|reverse|backspace|min_count|file|cache_bust|tag|destination|quality|width|height|ratio|upsize|pos_x|pos_y|rotate|flip|blur|pixelate|greyscale|watermark)=(?!=)
-    captures:
-      '1': {name: entity.other.attribute-name.predefined.statamic}
+  statamic-not-operator:
+    name: keyword.operator.other.statamic
+    match: (\s|^)(!)
 
-  numbers:
+  statamic-modifier-pipe:
+    name: keyword.operator.other.statamic
+    match: (\|)
+
+  constant-numbers:
     name: constant.numeric.statamic
     match: (-|\+)?\s*[0-9]+(\.[0-9]+)?
+
+  constant-language:
+    name: constant.language.statamic
+    match: (true|TRUE|false|FALSE|yes|YES|no|NO)?
 
   string-double-quoted:
     name: string.quoted.double.html
@@ -113,6 +134,8 @@ repository:
     - include: '#statamic-tag-global-variable-bracketed'
     - include: '#statamic-var-modifiers'
     - include: '#statamic-tag-operator'
+    - include: '#statamic-not-operator'
+    - include: '#statamic-modifier-pipe'
     # - include: '#statamic-source'
 
   tag-stuff:
@@ -120,10 +143,13 @@ repository:
     - include: '#statamic-comment'
     - include: '#statamic-tag-parameter-known'
     - include: '#statamic-tag-operator'
+    - include: '#statamic-not-operator'
+    - include: '#statamic-modifier-pipe'
     - include: '#statamic-variable'
     - include: '#statamic-var-modifiers'
     - include: '#statamic-tag-global-variable'
     - include: '#statamic-tag'
     - include: '#string-double-quoted'
     - include: '#string-single-quoted'
-    - include: '#numbers'
+    - include: '#constant-numbers'
+    - include: '#constant-language'

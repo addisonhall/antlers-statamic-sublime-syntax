@@ -5,6 +5,11 @@ This started as a weekend project to bring Statamic tag syntax highlighting to S
 
 I called this Antlers because it was just fun... I mean, heck... everything about Statamic is fun.
 
+Updates
+-------
+
+I'm now doing my best to keep this version up-to-date with the [VS Code](https://github.com/addisonhall/ahdesign.antlers) and [Atom](https://github.com/addisonhall/language-antlers) versions.
+
 Installation
 ------------
 

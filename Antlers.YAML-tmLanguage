@@ -1,155 +1,89 @@
-# [PackageDev] target_format: plist, ext: tmLanguage
-name: Antlers (Statamic Syntax)
+name: 'Antlers (Statamic Syntax)'
 scopeName: text.html.statamic
-fileTypes: [html, htm, php, xhtml]
+fileTypes:
+  - html
+  - htm
+  - xhtml
 uuid: c312fb5f-f2c9-41a2-9ce1-1b6dc65cc1b3
-
 patterns:
-
-- include: '#embedded-code'
-
-- comment: This is set to use XHTML standards, but you can change that by changing .strict to .basic for HTML standards
-  include: text.html.basic
-
+  -
+    include: '#statamic-comments'
+  -
+    include: '#statamic-overall-tags'
+  -
+    comment: 'This is set to use XHTML standards, but you can change that by changing .strict to .basic for HTML standards'
+    include: text.html.basic
 repository:
-
-  statamic-comment:
-    name: comment.block.statamic
+  statamic-comments:
     begin: '\{\{\#'
-    captures:
-      '0': {name: punctuation.definition.comment.html}
     end: '\#\}\}'
-
-  statamic-tag:
-    name: entity.name.tag.statamic
-    begin: \{\{(\s?)(?=/?[a-zA-Z][a-zA-Z0-9:_-]*[a-zA-Z]+\b(?![:;]))
-    beginCaptures:
-      '0': {name: punctuation.definition.tag.begin.statamic}
-    end: \}\}
-    endCaptures:
-      '0': {name: punctuation.definition.tag.end.statamic}
+    name: comment.block.statamic
+  statamic-overall-tags:
+    begin: '\{\{(\s?)'
+    end: '(\s?)\}\}'
+    name: punctuation.tag.statamic
     patterns:
-    - include: '#statamic-tag-addon-builtin'
-    - include: '#statamic-tag-conditional'
-    - include: '#tag-stuff'
-
-  # STANDARD, BUILT-IN STATAMIC TAGS
+      - { include: '#statamic-overall-tags' }
+      - { include: '#statamic-tag-addon-builtin' }
+      - { include: '#statamic-tag-parameter-known' }
+      - { include: '#statamic-tag-conditional' }
+      - { include: '#tag-stuff' }
   statamic-tag-addon-builtin:
-    name: entity.name.function.statamic
-    begin: (404|cache|control_panel_edit_url|current_date|/?entries:(listing|pagination|map|previous|next|meld)|get:[a-zA-Z0-9-_:]+|/?get_content|/?get_files|get_post:[a-zA-Z0-9-_:]+|get_value:[a-zA-Z0-9-_:]+|/?location:(map_listing|map_url)|log:(debug|info|warn|error|fatal)|/?member:(forgot_password_form|reset_password_form|register_form|login|login_form|logout_url|logout|profile|profile_form|listing|pagination)|/?nav|/?nav:(exists|count|breadcrumbs)|/?obfuscate|/?pages:(listing|next|previous|meld)|path|post:[a-zA-Z0-9-_:]+|redirect|switch|/?taxonomy:listing|theme:(partial|asset|js|css|img)|transform|/?parent:[a-zA-Z0-9-_:]+|/?relate:[a-zA-Z0-9-_:]+)\b
-    end: (?=\}\})
-    # captures:
-      # '1': {name: support.function.addon.statamic}
-    patterns:
-    - include: '#tag-stuff'
-
-  # PARAMETERS FOR STATAMIC TAGS
+    match: '(404|/?asset(:)?|/?assets(:)?|/?cache|/?can:cp:([a-zA-Z0-9-_:]+)|/?collection(:)?([a-zA-Z0-9-_:]+)?|control_panel_edit_url|count|current_date|date_groups|/?email_form|/?entries(:)?(listing|pagination|map|previous|next|meld)?|exists|get:[a-zA-Z0-9-_:]+|/?get_content|/?get_files|get_post:[a-zA-Z0-9-_:]+|get_value:[a-zA-Z0-9-_:]+|glide|/?in:[a-zA-Z0-9-_:]+|/?is:[a-zA-Z0-9-_:]+|/?location(:)?(map_listing|map_url)?|log(:)?(debug|info|warn|error|fatal)?|login|login_form|logout|logout_url|/?member(:)?(forgot_password_form|listing|pagination|profile|profile_form|register_form|reset_password_form)?|/?nav(:)?(exists|count|breadcrumbs)?|/?obfuscate|old:[a-zA-Z0-9-_\-:]+|/?pages(:)?(listing|next|previous|meld)?|path|post:[a-zA-Z0-9-_:]+|/?parent:[a-zA-Z0-9-_:]+|partial:[a-zA-Z0-9-_\-:]+|/?protect:(password_form)|redirect|/?relate:[a-zA-Z0-9-_:]+|/?search:results|switch|/?taxonomy:[a-zA-Z0-9-_:]+|/?taxonomy:listing|theme(:)?([a-zA-Z0-9-_:]+)?|transform|/?user(:)?(can|forgot_password_form|in|is|login_form|logout|logout_url|profile|register_form|reset_password_form)?|/?users|/?var\b(:)?([a-zA-Z0-9-_:]+)?)\b'
+    name: meta.function-call.statamic
   statamic-tag-parameter-known:
-    # name: entity.other.attribute-name.statamic
-    match: (?:\s|^)(action|between|current|for|from|key|scope|field|format|folder|taxonomy|show_hidden|since|until|show_past|show_future|conditions|precision|sort_by|sort_dir|sort|limit|offset|paginate|group_by_date|src|use_context|wrap|match|exclude|extension|in|not_in|file_size|file_date|depth|center_point|locate_with|map_id|clusters|type|open_popup|return|reset_return|allow_request_return|logged_in_redirect|attr|member|role|max_depth|include_entries|folders_only|include_content|url|username|include_home|reverse|backspace|trim|min_count|file|cache_bust|tag|destination|quality|width|height|ratio|upsize|pos_x|pos_y|rotate|flip|blur|pixelate|greyscale|watermark|what|zoom|specifically|message)=(?!=)
+    match: '(action|add|allow_request_return|ampersand_list|as|ascii|at|attr|backspace|bcc|between|blur|brightness|cache_bust|camelize|cc|cdata|ceil|center_point|class|clusters|collapse|collapse_whitespace|collection|conditions|console_log|contains|contains_all|contains_any|contrast|count|count_substring|crop|current|dashify|days_ago|decode|depth|deslugify|destination|divide|dl|do|dump|email|ends_with|ensure_left|ensure_right|entities|exclude|explode|extension|favicon|field|fields|file_date|file_size|file|filename|filter|first|fit|flatten|flip|floor|folder|folders_only|for|format|format_localized|from|full_urls|gamma|gravatar|greyscale|group|groups|group_by|group_by_date|has_lower_case|has_upper_case|height|honeypot|hours_ago|id|image|in|include_content|include_entries|include_home|insert|is|is_after|is_alpha|is_alphanumeric|is_before|is_between|is_empty|is_future|is_json|is_leap_year|is_lowercase|is_numberwang|is_numeric|is_past|is_today|is_uppercase|is_weekday|is_weekend|is_yesterday|join|key|last|lcfirst|length|limit|link|locate_with|logged_in_redirect|lower|macro|mailto|map_id|markdown|match|max_depth|member|message|min_count|minutes_ago|mod|months_ago|msg_footer|msg_header|multiply|name|nl2br|not_in|obfuscate|obfuscate_email|offset|ol|open_popup|orient|page|paginate|param|partial|permission|pixelate|plural|pos_x|pos_y|precision|quality|ratio|rawurlencode|read_time|redirect|regex_replace|relative|remove_left|remove_right|repeat|replace|required|reset_return|reset_url|response|return|reverse|role|roles|rotate|round|safe_truncate|sanitize|scope|seconds_ago|sentence_list|segment|sharpen|show_future|show_hidden|show_past|show_unpublished|shuffle|singular|since|slugify|smartypants|sort_by|sort_dir|sort|specifically|square|src|starts_with|strip_tags|subject|substr|subtract|sum|surround|swap_case|tag|taxonomy|textile|tidy|title|to|to_json|to_spaces|to_tabs|trim|truncate|type|ucfirst|ul|underscored|unique|until|upper|upsize|url|urldecode|urlencode|use_context|username|version|watermark|weeks_ago|what|widont|width|word_count|wrap|years_ago|zoom)=(?!=)'
+    name: support.function.parameter.statamic
+  statamic-tag-native-variable:
+    match: '(\G|\s|\b)(_is_draft|_is_hidden|_site_name|_site_url|recursive\schildren|alt|basename|/?children|collection|content|count|current_uri|current_url|date|date_group|datestamp|email_sent|environment|error|/?errors|expired|extension|field_errors:[a-zA-Z0-9-_:]+|file|filename|first|get|get_post|grouped_date|has_entries|has_next|has_previous|homepage|id|index|is_[a-zA-Z0-9-_:]+|is_admin|is_current|is_entry|is_image|is_page|is_parent|is_published|is_\[role\]|in_\[group\]|last_modified_instance|last_modified_timestamp|last_modified|last_segment|last|layout_content|locale|logged_in|name|next_page|next|no_results|now|old_values:[a-zA-Z0-9-_:]+|page_url|parent|path|permalink|post|prev|previous_page|previous|response_code|results|search_score|segment_[0-9]+|site_url|size_b|size_bytes|size_gb|size_gigabytes|size_kb|size_kilobytes|size_mb|size_megabytes|size|slug|success|taxonomy_name|taxonomy_slug|theme_path|title|total_found|total_results|url_invalid|url|username|zero_index)\b(?![\=\-\:])'
     captures:
-      '1': {name: entity.other.attribute-name.statamic}
-      # '1': {name: entity.name.type.statamic}
-
+      '2': { name: variable.language.statamic }
   statamic-variable:
-    name: variable.other.php.html
-    # name: variable.language.statamic
-    begin: \{\{\s*
+    match: '(/?\w+)(:)?(\w+)?'
     captures:
-      '0': {name: support.function.php.statamic}
-    end: \}\}
-
-  statamic-tag-conditional:
-    begin: (/?else|/?elseif|/?if|/?unless|endif|endunless|unlesselse)\b
-    end: (?=\}\})
-    captures:
-      '1': {name: keyword.control.statamic}
-    patterns:
-    - include: '#tag-stuff'
-
-  statamic-tag-global-variable:
-    name: variable.language.statamic
-    match: (\G|\s|\b)(count|date|datestamp|email_sent|error|errors|expired|extension|file|filename|first|index|zero_index|grouped_date|_is_draft|_is_hidden|current_url|is_current|is_parent|title|children|\*recursive\schildren\*|parent|environment|has_previous|has_next|homepage|is_admin|is_image|is_[a-zA-Z0-9-_:]+|last|last_modified|last_segment|logged_in|next|now|no_results|page_url|permalink|prev|segment_[0-9]+|success|field_errors:[a-zA-Z0-9-_:]+|old_values:[a-zA-Z0-9-_:]+|size|size_bytes|size_kilobytes|size_megabytes|size_gigabytes|name|slug|taxonomy_name|taxonomy_slug|theme_path|total_found|total_results|results|url|url_invalid|username)\b(?![\=\-\:])
-
-  statamic-tag-global-variable-bracketed:
-    name: variable.language.statamic
-    match: \{\{(\s?)(count|date|datestamp|email_sent|error|errors|expired|extension|file|filename|first|index|zero_index|grouped_date|_is_draft|_is_hidden|current_url|is_current|is_parent|title|children|\*recursive\schildren\*|parent|environment|has_previous|has_next|homepage|is_admin|is_image|is_[a-zA-Z0-9-_:]+|last|last_modified|last_segment|logged_in|next|now|no_results|page_url|permalink|prev|segment_[0-9]+|success|field_errors:[a-zA-Z0-9-_:]+|old_values:[a-zA-Z0-9-_:]+|size|size_bytes|size_kilobytes|size_megabytes|size_gigabytes|name|slug|taxonomy_name|taxonomy_slug|theme_path|total_found|total_results|results|url|url_invalid|username)(\s?)\}\}
-
+      '1': { name: variable.other.statamic }
+      '2': { name: keyword.operator.other.statamic }
+      '3': { name: support.function.statamic }
   statamic-var-modifiers:
-    name: support.function.statamic
-    match: (?<=(?:[a-zA-Z0-9_\x{7f}-\x{ff}\]\)\'\"]\|)|\{\{\sfilter\s)(-:[0-9]+|\+:[0-9]+|\*:[0-9]+|/:[0-9]+|\^:[0-9]+|abs|acos|ago|ampersand_list|asin|atan|backspace|bindec|ceil|censor|contains:([a-zA-Z0-9-_:]+)|cos|decbin|dechex|decoct|deg2rad|deslugify|distance_in_km_from:(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)|distance_in_mi_from:(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)|double|dump|empty|ends_with:([a-zA-Z0-9-_]+)|entities|floor|format_number(:?)(([0-9]+)?)|hexdec|img(:?)(([0-9]+)?)((,[0-9]+)?)|in_future|in_past|is_today|is_tomorrow|is_weekday|is_weekend|length|link|list|log(:?)(([0-9]+)?)|log10|lower|markdown|%:(([0-9]+)?)|nl2br|not_empty|numeric|obfuscate|octdec|option_list|ordered_list|ordinal|rad2deg|relative|remove_left:([a-zA-Z0-9-_]+)|remove_left:([a-zA-Z0-9-_]+)|repeat:([0-9]+)|replace:([a-zA-Z0-9-_]+):([a-zA-Z0-9-_]+)|required_list|reverse|rot13|round(:?)(([0-9]+)?)|sanitize|scramble|sentence_list|sin|since|slugify|smartypants|spaced_list|specialchars|sqrt|starts_with:([a-zA-Z0-9-_]+)(:?)((true|false)?)|strip_spaces|strip_tags(:?)(([a-zA-Z0-9]+(,[a-zA-Z0-9]+)*)?)|tan|textile|title|trim|triple|truncate:([0-9]+)|ucfirst|unordered_list|until|upper|urldecode|urlencode|widont|word_count)(?=[\s\|\]\}\):,]|\.\.|\*\*)
-    # captures:
-      # '0': {name: support.class.statamic}
-      # '2': {name: constant.numeric.statamic}
-    patterns:
-    - include: '#statamic-modifier-pipe'
-
+    match: '(\s)?(\|)(\s)?(\w+((:([a-zA-Z0-9-_/-@]+)){1,2})?|((-|\+|\*|/|\^|\%):(\d*)?\.?(\d+)))+'
+    captures:
+      '2': { name: keyword.operator.other.statamic }
+      '4': { name: support.function.statamic }
+  statamic-tag-conditional:
+    match: '(/?else|/?elseif|/?if|/?unless|endif|endunless|unlesselse)'
+    name: keyword.control.statamic
   statamic-tag-operator:
+    match: '(\(|\)|or|OR|and|AND|&&|<=|>=|<>|<|>|=|!=|==|===|!==|~|\|\|)'
     name: keyword.operator.logical.statamic
-    match: (\s|^)(or|OR|and|AND|&&|<=|>=|<>|<|>|=|!=|==|===|!==|\|\|)\s
-
-  statamic-not-operator:
-    name: keyword.operator.other.statamic
-    match: (\s|^)(!)
-
-  statamic-modifier-pipe:
-    name: keyword.operator.other.statamic
-    match: (\|)
-
-  constant-numbers:
+  statamic-constant-language:
+    match: (\G|\s|\b)(true|TRUE|false|FALSE|yes|YES|no|NO)\s
+    captures:
+      '2': { name: constant.language.statamic }
+  statamic-constant-numbers:
+    match: '(\d*)?\.?(\d+)'
     name: constant.numeric.statamic
-    match: (-|\+)?\s*[0-9]+(\.[0-9]+)?
-
-  constant-language:
-    name: constant.language.statamic
-    match: (true|TRUE|false|FALSE|yes|YES|no|NO)?
-
-  string-double-quoted:
-    name: string.quoted.double.html
+  statamic-modifier-pipe:
+    match: (\|)
+    name: keyword.operator.other.statamic
+  statamic-not-operator:
+    match: (\s|^)(!)
+    name: keyword.operator.other.statamic
+  statamic-string-double-quoted:
     begin: '"'
     end: '"'
-    patterns:
-    - include: '#statamic-comment'
-
-  string-single-quoted:
-    name: string.quoted.single.html
+    name: string.quoted.double.html
+  statamic-string-single-quoted:
     begin: ''''
     end: ''''
-    patterns:
-    - include: '#statamic-comment'
-
-  # statamic-source:
-  #   name: source.yaml.statamic
-  #   begin: '^\-\-\-$'
-  #   end: '^\-\-\-$'
-  #   patterns:
-  #   - include: source.yaml
-
-  embedded-code:
-    patterns:
-    - include: '#statamic-comment'
-    - include: '#statamic-tag'
-    - include: '#statamic-variable'
-    - include: '#statamic-tag-global-variable'
-    - include: '#statamic-tag-global-variable-bracketed'
-    - include: '#statamic-var-modifiers'
-    - include: '#statamic-tag-operator'
-    - include: '#statamic-not-operator'
-    - include: '#statamic-modifier-pipe'
-    # - include: '#statamic-source'
-
+    name: string.quoted.single.html
   tag-stuff:
     patterns:
-    - include: '#statamic-comment'
-    - include: '#statamic-tag-parameter-known'
-    - include: '#statamic-tag-operator'
-    - include: '#statamic-not-operator'
-    - include: '#statamic-modifier-pipe'
-    - include: '#statamic-variable'
-    - include: '#statamic-var-modifiers'
-    - include: '#statamic-tag-global-variable'
-    - include: '#statamic-tag'
-    - include: '#string-double-quoted'
-    - include: '#string-single-quoted'
-    - include: '#constant-numbers'
-    - include: '#constant-language'
+      - { include: '#statamic-constant-numbers' }
+      - { include: '#statamic-constant-language' }
+      - { include: '#statamic-tag-operator' }
+      - { include: '#statamic-not-operator' }
+      - { include: '#statamic-tag-native-variable' }
+      - { include: '#statamic-variable' }
+      - { include: '#statamic-var-modifiers' }
+      - { include: '#statamic-string-double-quoted' }
+      - { include: '#statamic-string-single-quoted' }
